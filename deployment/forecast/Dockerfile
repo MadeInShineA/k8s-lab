@@ -1,7 +1,7 @@
 # Syntax=docker/dockerfile:1
 
 # Stage 1: Build Stage
-FROM --platform=$BUILDPLATFORM python:3.11-slim-bullseye AS builder
+FROM --platform=$BUILDPLATFORM python:3.11-slim-bookworm AS builder
 
 WORKDIR /app
 
@@ -24,7 +24,7 @@ RUN python -m venv venv && \
 COPY . .
 
 # Stage 2: Runtime Stage
-FROM --platform=$BUILDPLATFORM python:3.11-slim-bullseye
+FROM --platform=$BUILDPLATFORM python:3.11-slim-bookworm
 
 WORKDIR /app
 
