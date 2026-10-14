@@ -13,19 +13,26 @@ spec:
         app: data-retrieval-pod
     spec:
       containers:
-      - name: data-retrieval
-        image: hesgelsds/data-retrieval:1.0.2  # Replace with your Docker image name
-        imagePullPolicy: Always        # Force the pull of the container image - used for testing purposes
-        env:
-        - name: REDIS_HOST
-          value: # To be Filled
-        - name: AWS_ACCESS_KEY_ID
-          # Fill in with the Secret key value
-        - name: AWS_SECRET_ACCESS_KEY
-          # Fill in with the Secret key value
+        - name: data-retrieval
+          image: madeinshinea/data-retrieval:1.0.2 # Replace with your Docker image name
+          imagePullPolicy: Always # Force the pull of the container image - used for testing purposes
+          env:
+            - name: REDIS_HOST
+              value: redis
+            - name: AWS_ACCESS_KEY_ID
+              # Fill in with the Secret key value
+              valueFrom:
+                secretKeyRef:
+                  name: aws-credentials
+                  key: AWS_ACCESS_KEY_ID
+            - name: AWS_SECRET_ACCESS_KEY
+              # Fill in with the Secret key value
+              valueFrom:
+                secretKeyRef:
+                  name: aws-credentials
+                  key: AWS_SECRET_ACCESS_KEY
       restartPolicy: Never
 
-# There is no service for this Job, because the job does not need to be accessed externally or expose any ports. 
-# It will connect to the Redis service internally within the cluster. 
+# There is no service for this Job, because the job does not need to be accessed externally or expose any ports.
+# It will connect to the Redis service internally within the cluster.
 # The Redis service itself still needs a service definition to allow other pods to connect to it.
-
